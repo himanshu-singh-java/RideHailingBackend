@@ -21,14 +21,14 @@ public class Riders {
     @Column(name = "phone")
     private String phoneNum;
 
-    @Column(name = "rating", nullable = true, precision = 3, scale = 2)
+    @Column(name = "rating")
     private Double riderRating;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    Riders(){
+    public Riders(){
 
     }
 

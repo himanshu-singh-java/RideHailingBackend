@@ -28,10 +28,10 @@ public class Rides {
     @Column(name = "drop_node", nullable = false)
     private int dropNode;
 
-    @Column(name = "distance_km", precision = 5, scale = 2)
+    @Column(name = "distance_km")
     private Double distanceKm;
 
-    @Column(name = "fare", precision = 8, scale = 2)
+    @Column(name = "fare")
     private Double fare;
 
     @Column(name = "status")
@@ -131,7 +131,7 @@ public class Rides {
 
     @Override
     public String toString() {
-        return "Rides{" +
+        return "RideRepository{" +
                 "rider=" + rider +
                 ", vehicle=" + vehicle +
                 '}';

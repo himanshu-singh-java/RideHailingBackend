@@ -24,7 +24,7 @@ public abstract class Vehicles {
     @Column(name = "status")
     private VehicleStatus vehicleStatus;
 
-    @Column(name = "rating", precision = 3, scale = 2)
+    @Column(name = "rating")
     private double rating;
 
     Vehicles(){
