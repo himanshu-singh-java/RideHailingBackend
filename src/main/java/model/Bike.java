@@ -1,0 +1,88 @@
+package model;
+
+
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("BIKE")
+public class Bike extends Vehicles {
+
+    @Column(name = "bike_model")
+    private String bikeModel;
+
+    @Column(name = "bike_type")
+    private String bikeType;
+
+    @Column(name = "passenger_capacity")
+    private int passengerCapacity;
+
+    @Column(name = "has_extra_helmet")
+    private boolean hasExtraHelmet;
+
+    @Column(name = "is_parcel_delivery_enabled")
+    private boolean isParcelDeliveryEnabled;
+
+    public Bike(){
+
+    }
+
+    @Override
+    public double calculateFare(double distanceKm){
+        double baseFare = 20;
+        double perKmRate = 6;
+        return baseFare + (perKmRate * distanceKm);
+    }
+
+    public String getBikeModel() {
+        return bikeModel;
+    }
+
+    public void setBikeModel(String bikeModel) {
+        this.bikeModel = bikeModel;
+    }
+
+    public String getBikeType() {
+        return bikeType;
+    }
+
+    public void setBikeType(String bikeType) {
+        this.bikeType = bikeType;
+    }
+
+    public int getPassengerCapacity() {
+        return passengerCapacity;
+    }
+
+    public void setPassengerCapacity(int passengerCapacity) {
+        this.passengerCapacity = passengerCapacity;
+    }
+
+    public boolean isHasExtraHelmet() {
+        return hasExtraHelmet;
+    }
+
+    public void setHasExtraHelmet(boolean hasExtraHelmet) {
+        this.hasExtraHelmet = hasExtraHelmet;
+    }
+
+    public boolean isParcelDeliveryEnabled() {
+        return isParcelDeliveryEnabled;
+    }
+
+    public void setParcelDeliveryEnabled(boolean parcelDeliveryEnabled) {
+        isParcelDeliveryEnabled = parcelDeliveryEnabled;
+    }
+
+    @Override
+    public String toString() {
+        return "Bike{" +
+                "bikeModel='" + bikeModel + '\'' +
+                ", bikeType='" + bikeType + '\'' +
+                ", passengerCapacity=" + passengerCapacity +
+                ", hasExtraHelmet=" + hasExtraHelmet +
+                ", isParcelDeliveryEnabled=" + isParcelDeliveryEnabled +
+                '}';
+    }
+}
