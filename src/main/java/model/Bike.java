@@ -19,10 +19,10 @@ public class Bike extends Vehicles {
     private int passengerCapacity;
 
     @Column(name = "has_extra_helmet")
-    private boolean hasExtraHelmet;
+    private Boolean hasExtraHelmet;
 
     @Column(name = "is_parcel_delivery_enabled")
-    private boolean isParcelDeliveryEnabled;
+    private Boolean isParcelDeliveryEnabled;
 
     public Bike(){
 
@@ -59,19 +59,19 @@ public class Bike extends Vehicles {
         this.passengerCapacity = passengerCapacity;
     }
 
-    public boolean isHasExtraHelmet() {
+    public Boolean HasExtraHelmet() {
         return hasExtraHelmet;
     }
 
-    public void setHasExtraHelmet(boolean hasExtraHelmet) {
+    public void setHasExtraHelmet(Boolean hasExtraHelmet) {
         this.hasExtraHelmet = hasExtraHelmet;
     }
 
-    public boolean isParcelDeliveryEnabled() {
+    public Boolean isParcelDeliveryEnabled() {
         return isParcelDeliveryEnabled;
     }
 
-    public void setParcelDeliveryEnabled(boolean parcelDeliveryEnabled) {
+    public void setParcelDeliveryEnabled(Boolean parcelDeliveryEnabled) {
         isParcelDeliveryEnabled = parcelDeliveryEnabled;
     }
 

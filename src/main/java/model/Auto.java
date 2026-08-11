@@ -19,7 +19,7 @@ public class Auto extends Vehicles{
     private int passengerCapacity;
 
     @Column(name = "is_shared_auto")
-    private boolean isSharedAuto;
+    private Boolean isSharedAuto;
 
     public Auto(){
 
@@ -57,11 +57,11 @@ public class Auto extends Vehicles{
         this.passengerCapacity = passengerCapacity;
     }
 
-    public boolean isSharedAuto() {
+    public Boolean isSharedAuto() {
         return isSharedAuto;
     }
 
-    public void setSharedAuto(boolean sharedAuto) {
+    public void setSharedAuto(Boolean sharedAuto) {
         isSharedAuto = sharedAuto;
     }
 

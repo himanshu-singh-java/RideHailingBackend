@@ -45,7 +45,7 @@ public class Rides {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    Rides(){
+    public Rides(){
 
     }
 

@@ -18,13 +18,13 @@ public class Car extends Vehicles{
     private int passengerCapacity;
 
     @Column(name = "is_ac_available")
-    private boolean isAcAvailable;
+    private Boolean isAcAvailable;
 
     @Column(name = "has_luggage_carrier")
-    private boolean hasLuggageCarrier;
+    private Boolean hasLuggageCarrier;
 
     @Column(name = "has_wifi_or_screen")
-    private boolean hasWifiOrScreen;
+    private Boolean hasWifiOrScreen;
 
     public Car(){
 
@@ -66,27 +66,27 @@ public class Car extends Vehicles{
         this.passengerCapacity = passengerCapacity;
     }
 
-    public boolean isAcAvailable() {
+    public Boolean isAcAvailable() {
         return isAcAvailable;
     }
 
-    public void setAcAvailable(boolean acAvailable) {
+    public void setAcAvailable(Boolean acAvailable) {
         isAcAvailable = acAvailable;
     }
 
-    public boolean isHasLuggageCarrier() {
+    public Boolean isHasLuggageCarrier() {
         return hasLuggageCarrier;
     }
 
-    public void setHasLuggageCarrier(boolean hasLuggageCarrier) {
+    public void setHasLuggageCarrier(Boolean hasLuggageCarrier) {
         this.hasLuggageCarrier = hasLuggageCarrier;
     }
 
-    public boolean getHasWifiOrScreen() {
+    public Boolean getHasWifiOrScreen() {
         return hasWifiOrScreen;
     }
 
-    public void setHasWifiOrScreen(boolean hasWifiOrScreen) {
+    public void setHasWifiOrScreen(Boolean hasWifiOrScreen) {
         this.hasWifiOrScreen = hasWifiOrScreen;
     }
 }

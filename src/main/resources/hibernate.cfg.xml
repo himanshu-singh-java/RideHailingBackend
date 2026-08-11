@@ -13,5 +13,9 @@
         <mapping class="model.Riders"/>
         <mapping class="model.Vehicles"/>
         <mapping class="model.Rides"/>
+        <mapping class="model.Car"/>
+        <mapping class="model.Bike"/>
+        <mapping class="model.Auto"/>
+
     </session-factory>
 </hibernate-configuration>
