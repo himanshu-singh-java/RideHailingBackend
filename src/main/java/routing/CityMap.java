@@ -3,6 +3,17 @@ package routing;
 import java.util.*;
 
 public class CityMap {
+
+    public CityMap(){
+        addRoad(1, 2, 5.0);
+        addRoad(2, 3, 3.5);
+        addRoad(1, 3, 7.0);
+        addRoad(3, 4, 4.0);
+        addRoad(2, 4, 6.0);
+        addRoad(4, 5, 2.5);
+        addRoad(3, 5, 8.0);
+    }
+
     private Map<Integer, List<Edge>> graph = new HashMap<>();
 
     public void addRoad(int source, int destination, Double distance){
