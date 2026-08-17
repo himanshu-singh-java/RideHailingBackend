@@ -8,6 +8,7 @@ import repository.VehicleRepository;
 import routing.CityMap;
 import service.RideEngine;
 
+
 public class Main {
     public static void main(String[] args) {
 
@@ -19,8 +20,8 @@ public class Main {
         CityMap cityMap = new CityMap();
 
         RideEngine rideEngine = new RideEngine(vehicleRepository, rideRepository, riderRepository, cityMap);
-
         RiderController controller = new RiderController(rideEngine);
+
         controller.startApp();
     }
 }

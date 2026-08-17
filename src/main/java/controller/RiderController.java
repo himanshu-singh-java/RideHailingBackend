@@ -19,14 +19,23 @@ public class RiderController {
         while(true) {
             System.out.println("WELCOME TO RIDE-HAILING APP");
             System.out.println("1. Book a Ride");
-            System.out.println("2. Exit");
+            System.out.println("2. Complete a Ride");
+            System.out.println("3. Exit");
             System.out.println("Enter your choice: ");
 
             int choice = scanner.nextInt();
 
-            if (choice == 2) {
+            if(choice == 3){
                 System.out.println("Exiting Application. ");
                 break;
+            }
+            else if (choice == 2) {
+                System.out.println("Enter the Ride ID to complete: ");
+                int rideIdToComplete = scanner.nextInt();
+
+                System.out.println("Processing Completion...");
+                rideEngine.completeRide(rideIdToComplete);
+
             } else if (choice == 1) {
                 System.out.println("Enter your Rider Id: ");
                 int riderId = scanner.nextInt();

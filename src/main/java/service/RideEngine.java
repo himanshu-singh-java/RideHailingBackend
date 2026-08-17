@@ -5,6 +5,7 @@ import repository.RideRepository;
 import repository.RiderRepository;
 import repository.VehicleRepository;
 import routing.CityMap;
+import model.Rides;
 
 public class RideEngine {
 
@@ -33,9 +34,10 @@ public class RideEngine {
 
         Vehicles availableVehicle = vehicleRepository.findAvailableVehicle(vehicleType);
         if(availableVehicle == null){
-            System.out.println("sorry, no " + vehicleType + "is currently available.");
+            System.out.println("sorry, no " + vehicleType + " is currently available.");
             return null;
         }
+
 
         double estimatedDistance = cityMap.getShortestDistance(pickupNode, dropNode);
 
@@ -48,6 +50,7 @@ public class RideEngine {
 
         availableVehicle.setVehicleStatus(VehicleStatus.ON_RIDE);
         availableVehicle.setCurrentNode(dropNode);
+        vehicleRepository.updateVehicle(availableVehicle);
 
         Rides newRide = new Rides();
         newRide.setRider(riders);
@@ -58,8 +61,36 @@ public class RideEngine {
 
         rideRepository.saveRide(newRide);
 
-        System.out.println("Success! Ride booked with " + availableVehicle.getDriverName() + " Total Fare : ₹ " + estimatedFare);
+        System.out.println("Success! Ride booked with " + availableVehicle.getDriverName() +
+                " (Vehicle ID: " + availableVehicle.getVehicleId() + ") | Total Fare : ₹ " + estimatedFare);
 
         return  newRide;
+    }
+
+    public void completeRide(int rideId){
+
+        Rides ride = rideRepository.getRideById(rideId);
+
+        if(ride == null){
+            System.out.println("Error : Ride with ID " + rideId + " not found!");
+            return;
+        }
+
+        if(ride.getRideStatus() == RideStatus.COMPLETED){
+            System.out.println("This ride is already marked as COMPLETED.");
+            return;
+        }
+
+        ride.setRideStatus(RideStatus.COMPLETED);
+
+        Vehicles vehicles = ride.getVehicle();
+        vehicles.setVehicleStatus(VehicleStatus.AVAILABLE);
+        vehicleRepository.updateVehicle(vehicles);
+
+        rideRepository.updateRide(ride);
+
+        System.out.println("Success! Ride ID " + rideId + " is now COMPLETED.");
+        System.out.println("Driver " + vehicles.getDriverName() +
+                " (Vehicle ID: " + vehicles.getVehicleId() + ") is now AVAILABLE...");
     }
 }
