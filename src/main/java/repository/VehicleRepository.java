@@ -5,8 +5,10 @@ import model.Vehicles;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Repository;
 import util.HibernateUtil;
 
+@Repository
 public class VehicleRepository {
 
     public void saveVehicle(Vehicles vehicles){

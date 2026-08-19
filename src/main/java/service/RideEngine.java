@@ -1,12 +1,15 @@
 package service;
 
 import model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repository.RideRepository;
 import repository.RiderRepository;
 import repository.VehicleRepository;
 import routing.CityMap;
 import model.Rides;
 
+@Service
 public class RideEngine {
 
     private VehicleRepository vehicleRepository;
@@ -14,6 +17,7 @@ public class RideEngine {
     private RiderRepository riderRepository;
     private CityMap cityMap;
 
+    @Autowired
     public RideEngine(VehicleRepository vehicleRepository,
                       RideRepository rideRepository,
                       RiderRepository riderRepository, CityMap cityMap){
@@ -62,7 +66,10 @@ public class RideEngine {
         rideRepository.saveRide(newRide);
 
         System.out.println("Success! Ride booked with " + availableVehicle.getDriverName() +
-                " (Vehicle ID: " + availableVehicle.getVehicleId() + ") | Total Fare : ₹ " + estimatedFare);
+                " (Vehicle ID: " + availableVehicle.getVehicleId() + ")");
+        System.out.println("YOUR RIDE ID IS: " + newRide.getRideId());
+        System.out.println("Total Fare : ₹ " + estimatedFare);
+        System.out.println("Booking Confirmed! Have a safe journey.");
 
         return  newRide;
     }

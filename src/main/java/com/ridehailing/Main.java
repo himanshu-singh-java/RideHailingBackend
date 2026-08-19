@@ -1,12 +1,10 @@
 package com.ridehailing;
 
+import config.AppConfig;
 import controller.RiderController;
 import model.*;
-import repository.RideRepository;
-import repository.RiderRepository;
-import repository.VehicleRepository;
-import routing.CityMap;
-import service.RideEngine;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 public class Main {
@@ -14,13 +12,9 @@ public class Main {
 
         System.out.println("Initializing Database and Systems...");
 
-        VehicleRepository vehicleRepository = new VehicleRepository();
-        RiderRepository riderRepository = new RiderRepository();
-        RideRepository rideRepository = new RideRepository();
-        CityMap cityMap = new CityMap();
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
-        RideEngine rideEngine = new RideEngine(vehicleRepository, rideRepository, riderRepository, cityMap);
-        RiderController controller = new RiderController(rideEngine);
+        RiderController controller = context.getBean(RiderController.class);
 
         controller.startApp();
     }

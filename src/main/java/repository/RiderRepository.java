@@ -3,9 +3,10 @@ package repository;
 import model.Riders;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 import util.HibernateUtil;
 
-
+@Repository
 public class RiderRepository {
 
     public void saveRiders(Riders rider){

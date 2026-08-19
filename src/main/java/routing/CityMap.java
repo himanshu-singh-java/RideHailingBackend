@@ -1,7 +1,10 @@
 package routing;
 
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 
+@Component
 public class CityMap {
 
     public CityMap(){

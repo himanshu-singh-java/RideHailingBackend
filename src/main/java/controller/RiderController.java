@@ -1,10 +1,12 @@
 package controller;
 
 import model.Rides;
+import org.springframework.stereotype.Component;
 import service.RideEngine;
 
 import java.util.Scanner;
 
+@Component
 public class RiderController {
     private RideEngine rideEngine;
     private Scanner scanner;
