@@ -1,6 +1,7 @@
 package controller;
 
 import model.Rides;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.RideEngine;
 
@@ -11,6 +12,7 @@ public class RiderController {
     private RideEngine rideEngine;
     private Scanner scanner;
 
+    @Autowired
     public RiderController(RideEngine rideEngine){
         this.rideEngine = rideEngine;
         this.scanner = new Scanner(System.in);
