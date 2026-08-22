@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.RideEngine;
 
+import java.util.List;
 import java.util.Scanner;
 
 @Component
@@ -25,6 +26,7 @@ public class RiderController {
             System.out.println("1. Book a Ride");
             System.out.println("2. Complete a Ride");
             System.out.println("3. Exit");
+            System.out.println("4. View Ride History");
             System.out.println("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -62,7 +64,32 @@ public class RiderController {
                 } else {
                     System.out.println("Booking Failed. Please try again.");
                 }
-            } else {
+            }
+            else if(choice == 4){
+                System.out.println("Enter your Rider Id: ");
+                int riderId = scanner.nextInt();
+
+                List<Rides> history = rideEngine.getRideHistory(riderId);
+
+                if (history == null || history.isEmpty()) {
+                    System.out.println("No rides found for Rider ID: " + riderId);
+                } else {
+                    System.out.println("RIDE HISTORY FOR RIDER " + riderId);
+                    System.out.printf("%-10s | %-11s | %-10s | %-15s | %-15s%n",
+                            "RIDE ID", "DISTANCE", "FARE", "STATUS", "VEHICLE TYPE");
+
+                    for (Rides ride : history) {
+                        System.out.printf("%-10d | %-8.1f km | ₹ %-8.1f | %-15s | %-15s%n",
+                                ride.getRideId(),
+                                ride.getDistanceKm(),
+                                ride.getFare(),
+                                ride.getRideStatus(),
+                                ride.getVehicle().getClass().getSimpleName());
+                    }
+                }
+
+            }
+            else {
                 System.out.println("Invalid choice. Try again.");
             }
         }

@@ -6,6 +6,8 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import util.HibernateUtil;
 
+import java.util.List;
+
 @Repository
 public class RideRepository {
 
@@ -34,6 +36,7 @@ public class RideRepository {
     }
 
     public void updateRide(Rides ride){
+
         Transaction transaction = null;
 
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
@@ -51,6 +54,21 @@ public class RideRepository {
             System.out.println("Error occurred during updating data of Ride:");
             e.printStackTrace();
         }
+    }
 
+    public List<Rides> getRideHistoryByRiderId(int riderId){
+
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+
+            String query = "FROM Rides r WHERE r.rider.id = :riderID ORDER BY r.rideId DESC";
+
+            return session.createQuery(query, Rides.class)
+                    .setParameter("riderID", riderId)
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error fetching ride history from database!");
+            e.printStackTrace();
+            return null;
+        }
     }
 }

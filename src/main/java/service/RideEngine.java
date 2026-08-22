@@ -9,6 +9,8 @@ import repository.VehicleRepository;
 import routing.CityMap;
 import model.Rides;
 
+import java.util.List;
+
 @Service
 public class RideEngine {
 
@@ -99,5 +101,16 @@ public class RideEngine {
         System.out.println("Success! Ride ID " + rideId + " is now COMPLETED.");
         System.out.println("Driver " + vehicles.getDriverName() +
                 " (Vehicle ID: " + vehicles.getVehicleId() + ") is now AVAILABLE...");
+    }
+
+    public List<Rides> getRideHistory(int riderId){
+        Riders rider = riderRepository.getRiderById(riderId);
+
+        if(rider == null){
+            System.out.println("Error: Rider with ID "  + riderId +  " not found!");
+            return null;
+        }
+
+        return  rideRepository.getRideHistoryByRiderId(riderId);
     }
 }
