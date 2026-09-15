@@ -1,6 +1,5 @@
 package com.ridehailing;
 
-import controller.RiderController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -14,8 +13,5 @@ public class Main {
         System.out.println("Initializing Database and Systems...");
 
         ApplicationContext context = SpringApplication.run(Main.class);
-
-        RiderController controller = context.getBean(RiderController.class);
-        controller.startApp();
     }
 }

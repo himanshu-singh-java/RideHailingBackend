@@ -30,25 +30,20 @@ public class RideEngine {
     }
 
     public Rides bookRide(int riderId, String vehicleType, int pickupNode, int dropNode){
-        System.out.println("Booking initiated for Rider ID: " + riderId + " for a " + vehicleType);
 
         Riders riders = riderRepository.getRiderById(riderId);
         if(riders == null){
-            System.out.println("Error: Rider with ID " + riderId + " not found!");
             return null;
         }
 
         Vehicles availableVehicle = vehicleRepository.findAvailableVehicle(vehicleType);
         if(availableVehicle == null){
-            System.out.println("sorry, no " + vehicleType + " is currently available.");
             return null;
         }
-
 
         double estimatedDistance = cityMap.getShortestDistance(pickupNode, dropNode);
 
         if(estimatedDistance == -1.0){
-            System.out.println("Booking Failed: Route not possible between " + pickupNode + " and " + dropNode);
             return null;
         }
 
@@ -66,12 +61,6 @@ public class RideEngine {
         newRide.setRideStatus(RideStatus.ACCEPTED);
 
         rideRepository.saveRide(newRide);
-
-        System.out.println("Success! Ride booked with " + availableVehicle.getDriverName() +
-                " (Vehicle ID: " + availableVehicle.getVehicleId() + ")");
-        System.out.println("YOUR RIDE ID IS: " + newRide.getRideId());
-        System.out.println("Total Fare : ₹ " + estimatedFare);
-        System.out.println("Booking Confirmed! Have a safe journey.");
 
         return  newRide;
     }
