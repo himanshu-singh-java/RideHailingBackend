@@ -5,7 +5,7 @@ public class RideRequest {
     private int riderId;
     private String vehicleType;
     private int pickupNode;
-    private int DestinationNode;
+    private int dropNode;
 
     public int getRiderId() {
         return riderId;
@@ -31,11 +31,11 @@ public class RideRequest {
         this.pickupNode = pickupNode;
     }
 
-    public int getDestinationNode() {
-        return DestinationNode;
+    public int getDropNode() {
+        return dropNode;
     }
 
-    public void setDestinationNode(int destinationNode) {
-        DestinationNode = destinationNode;
+    public void setDropNode(int dropNode) {
+        this.dropNode = dropNode;
     }
 }

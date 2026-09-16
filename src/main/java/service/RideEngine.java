@@ -33,18 +33,18 @@ public class RideEngine {
 
         Riders riders = riderRepository.getRiderById(riderId);
         if(riders == null){
-            return null;
+            throw new RuntimeException("Error: Rider with ID " + riderId + " not found!");
         }
 
         Vehicles availableVehicle = vehicleRepository.findAvailableVehicle(vehicleType);
         if(availableVehicle == null){
-            return null;
+            throw new RuntimeException("Error: No available " + vehicleType + " found right now.");
         }
 
         double estimatedDistance = cityMap.getShortestDistance(pickupNode, dropNode);
 
         if(estimatedDistance == -1.0){
-            return null;
+            throw new RuntimeException("Error: Invalid route from node " + pickupNode + " to " + dropNode);
         }
 
         Double estimatedFare = availableVehicle.calculateFare(estimatedDistance);
@@ -65,18 +65,16 @@ public class RideEngine {
         return  newRide;
     }
 
-    public void completeRide(int rideId){
+    public Rides completeRide(int rideId){
 
         Rides ride = rideRepository.getRideById(rideId);
 
-        if(ride == null){
-            System.out.println("Error : Ride with ID " + rideId + " not found!");
-            return;
+        if (ride == null) {
+            throw new RuntimeException("Error: Ride with ID " + rideId + " not found!");
         }
 
         if(ride.getRideStatus() == RideStatus.COMPLETED){
-            System.out.println("This ride is already marked as COMPLETED.");
-            return;
+            throw new RuntimeException("This ride is already marked as COMPLETED.");
         }
 
         ride.setRideStatus(RideStatus.COMPLETED);
@@ -84,20 +82,17 @@ public class RideEngine {
         Vehicles vehicles = ride.getVehicle();
         vehicles.setVehicleStatus(VehicleStatus.AVAILABLE);
         vehicleRepository.updateVehicle(vehicles);
-
         rideRepository.updateRide(ride);
 
-        System.out.println("Success! Ride ID " + rideId + " is now COMPLETED.");
-        System.out.println("Driver " + vehicles.getDriverName() +
-                " (Vehicle ID: " + vehicles.getVehicleId() + ") is now AVAILABLE...");
+        return ride;
     }
 
     public List<Rides> getRideHistory(int riderId){
+
         Riders rider = riderRepository.getRiderById(riderId);
 
         if(rider == null){
-            System.out.println("Error: Rider with ID "  + riderId +  " not found!");
-            return null;
+            throw new RuntimeException("Error: Rider with ID " + riderId + " not found!");
         }
 
         return  rideRepository.getRideHistoryByRiderId(riderId);
