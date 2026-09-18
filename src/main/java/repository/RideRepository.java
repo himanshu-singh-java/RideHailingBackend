@@ -19,13 +19,11 @@ public class RideRepository {
             transaction = session.beginTransaction();
             session.persist(rides);
             transaction.commit();
-            System.out.println("Success! Ride saved in database!");
         } catch (Exception e) {
             if(transaction != null){
                 transaction.rollback();
             }
-            System.out.println("Error occurred during saving data of Ride:");
-            e.printStackTrace();
+            throw new RuntimeException("Error occurred during saving data of Ride:", e);
         }
     }
 
@@ -45,14 +43,12 @@ public class RideRepository {
             session.merge(ride);
 
             transaction.commit();
-            System.out.println("Success! Ride updated in database!");
         }
         catch (Exception e){
             if(transaction != null){
                 transaction.rollback();
             }
-            System.out.println("Error occurred during updating data of Ride:");
-            e.printStackTrace();
+            throw new RuntimeException("Error occurred during updating data of Ride:", e);
         }
     }
 
@@ -66,9 +62,31 @@ public class RideRepository {
                     .setParameter("riderID", riderId)
                     .getResultList();
         } catch (Exception e) {
-            System.out.println("Error fetching ride history from database!");
-            e.printStackTrace();
-            return null;
+            throw  new RuntimeException("Error fetching ride history from database!", e);
+        }
+    }
+
+    public void deleteRide(int rideId) {
+
+        Transaction transaction = null;
+
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+
+            transaction = session.beginTransaction();
+
+            Rides ride = session.find(Rides.class, rideId);
+
+            if(ride != null){
+                session.remove(ride);
+            }
+
+            transaction.commit();
+
+        } catch (RuntimeException e) {
+            if(transaction != null){
+                transaction.rollback();
+            }
+            throw new RuntimeException("Database error while deleting ride", e);
         }
     }
 }

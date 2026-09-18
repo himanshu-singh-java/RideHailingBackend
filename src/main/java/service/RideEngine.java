@@ -1,5 +1,6 @@
 package service;
 
+import mapper.RideMapper;
 import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,31 +30,32 @@ public class RideEngine {
         this.cityMap = cityMap;
     }
 
-    public Rides bookRide(int riderId, String vehicleType, int pickupNode, int dropNode){
+    public Rides bookRide(RideRequest request){
 
-        Riders riders = riderRepository.getRiderById(riderId);
+        Riders riders = riderRepository.getRiderById(request.getRiderId());
+
         if(riders == null){
-            throw new RuntimeException("Error: Rider with ID " + riderId + " not found!");
+            throw new RuntimeException("Error: Rider with ID " + request.getRiderId() + " not found!");
         }
 
-        Vehicles availableVehicle = vehicleRepository.findAvailableVehicle(vehicleType);
+        Vehicles availableVehicle = vehicleRepository.findAvailableVehicle(request.getVehicleType());
         if(availableVehicle == null){
-            throw new RuntimeException("Error: No available " + vehicleType + " found right now.");
+            throw new RuntimeException("Error: No available " + request.getVehicleType() + " found right now.");
         }
 
-        double estimatedDistance = cityMap.getShortestDistance(pickupNode, dropNode);
+        double estimatedDistance = cityMap.getShortestDistance(request.getPickupNode(), request.getDropNode());
 
         if(estimatedDistance == -1.0){
-            throw new RuntimeException("Error: Invalid route from node " + pickupNode + " to " + dropNode);
+            throw new RuntimeException("Error: Invalid route from node " + request.getPickupNode() + " to " + request.getDropNode());
         }
 
         Double estimatedFare = availableVehicle.calculateFare(estimatedDistance);
 
         availableVehicle.setVehicleStatus(VehicleStatus.ON_RIDE);
-        availableVehicle.setCurrentNode(dropNode);
+        availableVehicle.setCurrentNode(request.getDropNode());
         vehicleRepository.updateVehicle(availableVehicle);
 
-        Rides newRide = new Rides();
+        Rides newRide = RideMapper.mapToEntity(request);
         newRide.setRider(riders);
         newRide.setVehicle(availableVehicle);
         newRide.setDistanceKm(estimatedDistance);
@@ -96,5 +98,22 @@ public class RideEngine {
         }
 
         return  rideRepository.getRideHistoryByRiderId(riderId);
+    }
+
+    public void deleteRide(int rideId) {
+
+        Rides rides = rideRepository.getRideById(rideId);
+
+        if(rides == null){
+            throw new RuntimeException("Error: Cannot delete. Ride with ID " + rideId + " not found!");
+        }
+
+        if(rides.getRideStatus() == RideStatus.ACCEPTED){
+            Vehicles vehicles = rides.getVehicle();
+            vehicles.setVehicleStatus(VehicleStatus.AVAILABLE);
+            vehicleRepository.updateVehicle(vehicles);
+        }
+
+        rideRepository.deleteRide(rideId);
     }
 }
