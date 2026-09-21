@@ -35,6 +35,12 @@ public class RideEngine {
         Riders riders = riderRepository.findById(request.getRiderId())
                 .orElseThrow(() -> new RuntimeException("Error: Rider with ID " + request.getRiderId() + " not found!"));
 
+        boolean hasActiveRide = rideRepository.existsByRider_RiderIDAndRideStatus(request.getRiderId(), RideStatus.ACCEPTED);
+
+        if (hasActiveRide) {
+            throw new RuntimeException("Error: You already have an active ride! Please complete or cancel it first.");
+        }
+
         Vehicles availableVehicle = vehicleRepository.findAvailableVehicle(request.getVehicleType());
 
         if(availableVehicle == null){
