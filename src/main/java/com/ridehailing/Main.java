@@ -1,11 +1,15 @@
 package com.ridehailing;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.ridehailing", "controller", "repository", "routing", "service", "util"})
+@ComponentScan(basePackages = {"com.ridehailing", "controller", "exception", "mapper" ,"repository", "routing", "service"})
+@EnableJpaRepositories(basePackages = "repository")
+@EntityScan(basePackages = "model")
 public class Main {
     public static void main(String[] args) {
 

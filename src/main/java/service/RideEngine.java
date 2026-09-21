@@ -32,13 +32,11 @@ public class RideEngine {
 
     public Rides bookRide(RideRequest request){
 
-        Riders riders = riderRepository.getRiderById(request.getRiderId());
-
-        if(riders == null){
-            throw new RuntimeException("Error: Rider with ID " + request.getRiderId() + " not found!");
-        }
+        Riders riders = riderRepository.findById(request.getRiderId())
+                .orElseThrow(() -> new RuntimeException("Error: Rider with ID " + request.getRiderId() + " not found!"));
 
         Vehicles availableVehicle = vehicleRepository.findAvailableVehicle(request.getVehicleType());
+
         if(availableVehicle == null){
             throw new RuntimeException("Error: No available " + request.getVehicleType() + " found right now.");
         }
@@ -53,7 +51,7 @@ public class RideEngine {
 
         availableVehicle.setVehicleStatus(VehicleStatus.ON_RIDE);
         availableVehicle.setCurrentNode(request.getDropNode());
-        vehicleRepository.updateVehicle(availableVehicle);
+        vehicleRepository.save(availableVehicle);
 
         Rides newRide = RideMapper.mapToEntity(request);
         newRide.setRider(riders);
@@ -61,59 +59,48 @@ public class RideEngine {
         newRide.setDistanceKm(estimatedDistance);
         newRide.setFare(estimatedFare);
         newRide.setRideStatus(RideStatus.ACCEPTED);
-
-        rideRepository.saveRide(newRide);
+        rideRepository.save(newRide);
 
         return  newRide;
     }
 
     public Rides completeRide(int rideId){
 
-        Rides ride = rideRepository.getRideById(rideId);
-
-        if (ride == null) {
-            throw new RuntimeException("Error: Ride with ID " + rideId + " not found!");
-        }
+        Rides ride = rideRepository.findById(rideId)
+                .orElseThrow(() -> new RuntimeException("Error: Ride with ID " + rideId + " not found!"));
 
         if(ride.getRideStatus() == RideStatus.COMPLETED){
             throw new RuntimeException("This ride is already marked as COMPLETED.");
         }
 
         ride.setRideStatus(RideStatus.COMPLETED);
-
         Vehicles vehicles = ride.getVehicle();
         vehicles.setVehicleStatus(VehicleStatus.AVAILABLE);
-        vehicleRepository.updateVehicle(vehicles);
-        rideRepository.updateRide(ride);
+        vehicleRepository.save(vehicles);
+        rideRepository.save(ride);
 
         return ride;
     }
 
     public List<Rides> getRideHistory(int riderId){
 
-        Riders rider = riderRepository.getRiderById(riderId);
+        Riders rider = riderRepository.findById(riderId)
+                .orElseThrow(() -> new RuntimeException("Error: Rider with ID " + riderId + " not found!"));
 
-        if(rider == null){
-            throw new RuntimeException("Error: Rider with ID " + riderId + " not found!");
-        }
-
-        return  rideRepository.getRideHistoryByRiderId(riderId);
+        return  rideRepository.findByRider_RiderIDOrderByRideIdDesc(riderId);
     }
 
     public void deleteRide(int rideId) {
 
-        Rides rides = rideRepository.getRideById(rideId);
-
-        if(rides == null){
-            throw new RuntimeException("Error: Cannot delete. Ride with ID " + rideId + " not found!");
-        }
+        Rides rides = rideRepository.findById(rideId)
+                .orElseThrow(() -> new RuntimeException("Error: Cannot delete. Ride with ID " + rideId + " not found!"));
 
         if(rides.getRideStatus() == RideStatus.ACCEPTED){
             Vehicles vehicles = rides.getVehicle();
             vehicles.setVehicleStatus(VehicleStatus.AVAILABLE);
-            vehicleRepository.updateVehicle(vehicles);
+            vehicleRepository.save(vehicles);
         }
 
-        rideRepository.deleteRide(rideId);
+        rideRepository.deleteById(rideId);
     }
 }

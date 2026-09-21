@@ -13,7 +13,6 @@ public abstract class Vehicles {
     @Column(name = "vehicle_id")
     private int vehicleId;
 
-
     @Column(name = "driver_name")
     private String driverName;
 
