@@ -10,8 +10,10 @@ public class RideMapper {
 
         Rides rides = new Rides();
 
-        rides.setPickupNode(request.getPickupNode());
-        rides.setDropNode(request.getDropNode());
+        rides.setPickupLat(request.getPickupLat());
+        rides.setPickupLng(request.getPickupLng());
+        rides.setDropLat(request.getDropLat());
+        rides.setDropLng(request.getDropLng());
 
         return rides;
     }
@@ -20,8 +22,12 @@ public class RideMapper {
         RideResponse response = new RideResponse();
 
         response.setRideId(rides.getRideId());
-        response.setPickupNode(rides.getPickupNode());
-        response.setDropNode(rides.getDropNode());
+
+        response.setPickupLat(rides.getPickupLat());
+        response.setPickupLng(rides.getPickupLng());
+        response.setDropLat(rides.getDropLat());
+        response.setDropLng(rides.getDropLng());
+
         response.setFare(rides.getFare());
         response.setStatus(rides.getRideStatus().toString());
 

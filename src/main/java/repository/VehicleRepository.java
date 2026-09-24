@@ -9,7 +9,21 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicles, Integer> {
 
-    @Query(value = "SELECT * FROM vehicles WHERE vehicle_type = :vType AND status = 'AVAILABLE' LIMIT 1", nativeQuery = true)
-    Vehicles findAvailableVehicle(@Param("vType") String vehicleType);
+    @Query(
+            value = "SELECT * FROM vehicles v " +
+                    "WHERE v.status = 'AVAILABLE' " +
+                    "AND v.vehicle_type = :vehicleType " +
+                    "AND (6371 * acos(cos(radians(:pickupLat)) * cos(radians(v.current_latitude)) " +
+                    "* cos(radians(v.current_longitude) - radians(:pickupLng)) " +
+                    "+ sin(radians(:pickupLat)) * sin(radians(v.current_latitude)))) <= :radius " +
+                    "ORDER BY (6371 * acos(cos(radians(:pickupLat)) * cos(radians(v.current_latitude)) " +
+                    "* cos(radians(v.current_longitude) - radians(:pickupLng)) " +
+                    "+ sin(radians(:pickupLat)) * sin(radians(v.current_latitude)))) ASC " +
+                    "LIMIT 1", nativeQuery = true
+    )
+    Vehicles findNearestAvailableVehicle(@Param("vehicleType") String vehicleType,
+                                         @Param("pickupLat") Double pickupLat,
+                                         @Param("pickupLng") Double pickupLng,
+                                         @Param("radius") int radius);
 
 }

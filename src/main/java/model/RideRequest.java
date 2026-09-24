@@ -4,8 +4,10 @@ public class RideRequest {
 
     private int riderId;
     private String vehicleType;
-    private int pickupNode;
-    private int dropNode;
+    private Double pickupLat;
+    private Double pickupLng;
+    private Double dropLat;
+    private Double dropLng;
 
     public int getRiderId() {
         return riderId;
@@ -23,19 +25,35 @@ public class RideRequest {
         this.vehicleType = vehicleType;
     }
 
-    public int getPickupNode() {
-        return pickupNode;
+    public Double getPickupLat() {
+        return pickupLat;
     }
 
-    public void setPickupNode(int pickupNode) {
-        this.pickupNode = pickupNode;
+    public void setPickupLat(Double pickupLat) {
+        this.pickupLat = pickupLat;
     }
 
-    public int getDropNode() {
-        return dropNode;
+    public Double getPickupLng() {
+        return pickupLng;
     }
 
-    public void setDropNode(int dropNode) {
-        this.dropNode = dropNode;
+    public void setPickupLng(Double pickupLng) {
+        this.pickupLng = pickupLng;
+    }
+
+    public Double getDropLat() {
+        return dropLat;
+    }
+
+    public void setDropLat(Double dropLat) {
+        this.dropLat = dropLat;
+    }
+
+    public Double getDropLng() {
+        return dropLng;
+    }
+
+    public void setDropLng(Double dropLng) {
+        this.dropLng = dropLng;
     }
 }

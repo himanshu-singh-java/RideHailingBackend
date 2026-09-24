@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import repository.RideRepository;
 import repository.RiderRepository;
 import repository.VehicleRepository;
-import routing.CityMap;
 import model.Rides;
+import util.LocationUtils;
 
 import java.util.List;
 
@@ -18,16 +18,14 @@ public class RideEngine {
     private VehicleRepository vehicleRepository;
     private RideRepository rideRepository;
     private RiderRepository riderRepository;
-    private CityMap cityMap;
 
     @Autowired
     public RideEngine(VehicleRepository vehicleRepository,
                       RideRepository rideRepository,
-                      RiderRepository riderRepository, CityMap cityMap){
+                      RiderRepository riderRepository){
         this.vehicleRepository = vehicleRepository;
         this.rideRepository = rideRepository;
         this.riderRepository = riderRepository;
-        this.cityMap = cityMap;
     }
 
     public Rides bookRide(RideRequest request){
@@ -41,22 +39,34 @@ public class RideEngine {
             throw new RuntimeException("Error: You already have an active ride! Please complete or cancel it first.");
         }
 
-        Vehicles availableVehicle = vehicleRepository.findAvailableVehicle(request.getVehicleType());
+        int[] searchRadii = {2, 5, 10};
+        Vehicles availableVehicle = null;
+
+        for(int radius : searchRadii){
+            System.out.println("Searching for Nearest " + request.getVehicleType());
+
+            availableVehicle = vehicleRepository.findNearestAvailableVehicle(request.getVehicleType(),
+                    request.getPickupLat(), request.getPickupLng(), radius);
+
+            if(availableVehicle != null){
+                System.out.println("Success: Driver Found within " + radius + " km! ");
+                break;
+            }
+        }
+
 
         if(availableVehicle == null){
             throw new RuntimeException("Error: No available " + request.getVehicleType() + " found right now.");
         }
 
-        double estimatedDistance = cityMap.getShortestDistance(request.getPickupNode(), request.getDropNode());
-
-        if(estimatedDistance == -1.0){
-            throw new RuntimeException("Error: Invalid route from node " + request.getPickupNode() + " to " + request.getDropNode());
-        }
+        double estimatedDistance = LocationUtils.calculateDistance(request.getPickupLat(),
+                request.getPickupLng(), request.getDropLat(), request.getDropLng());
 
         Double estimatedFare = availableVehicle.calculateFare(estimatedDistance);
 
         availableVehicle.setVehicleStatus(VehicleStatus.ON_RIDE);
-        availableVehicle.setCurrentNode(request.getDropNode());
+        availableVehicle.setCurrentLat(request.getDropLat());
+        availableVehicle.setCurrentLng(request.getDropLng());
         vehicleRepository.save(availableVehicle);
 
         Rides newRide = RideMapper.mapToEntity(request);

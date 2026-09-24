@@ -22,12 +22,6 @@ public class Rides {
     @ManyToOne
     private Vehicles vehicle;
 
-    @Column(name = "pickup_node", nullable = false)
-    private int pickupNode;
-
-    @Column(name = "drop_node", nullable = false)
-    private int dropNode;
-
     @Column(name = "distance_km")
     private Double distanceKm;
 
@@ -44,6 +38,18 @@ public class Rides {
 
     @Column(name = "end_time")
     private LocalDateTime endTime;
+
+    @Column(name = "pickup_latitude")
+    private Double pickupLat;
+
+    @Column(name = "pickup_longitude")
+    private Double pickupLng;
+
+    @Column(name = "drop_latitude")
+    private Double dropLat;
+
+    @Column(name = "drop_longitude")
+    private Double dropLng;
 
     public Rides(){
 
@@ -73,20 +79,36 @@ public class Rides {
         this.vehicle = vehicle;
     }
 
-    public int getPickupNode() {
-        return pickupNode;
+    public Double getPickupLat() {
+        return pickupLat;
     }
 
-    public void setPickupNode(int pickupNode) {
-        this.pickupNode = pickupNode;
+    public void setPickupLat(Double pickupLat) {
+        this.pickupLat = pickupLat;
     }
 
-    public int getDropNode() {
-        return dropNode;
+    public Double getPickupLng() {
+        return pickupLng;
     }
 
-    public void setDropNode(int dropNode) {
-        this.dropNode = dropNode;
+    public void setPickupLng(Double pickupLng) {
+        this.pickupLng = pickupLng;
+    }
+
+    public Double getDropLat() {
+        return dropLat;
+    }
+
+    public void setDropLat(Double dropLat) {
+        this.dropLat = dropLat;
+    }
+
+    public Double getDropLng() {
+        return dropLng;
+    }
+
+    public void setDropLng(Double dropLng) {
+        this.dropLng = dropLng;
     }
 
     public Double getDistanceKm() {
@@ -131,9 +153,19 @@ public class Rides {
 
     @Override
     public String toString() {
-        return "RideRepository{" +
-                "rider=" + rider +
+        return "Rides{" +
+                "rideId=" + rideId +
+                ", rider=" + rider +
                 ", vehicle=" + vehicle +
+                ", distanceKm=" + distanceKm +
+                ", fare=" + fare +
+                ", rideStatus=" + rideStatus +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", pickupLat=" + pickupLat +
+                ", pickupLng=" + pickupLng +
+                ", dropLat=" + dropLat +
+                ", dropLng=" + dropLng +
                 '}';
     }
 }

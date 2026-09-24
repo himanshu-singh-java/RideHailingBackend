@@ -4,9 +4,10 @@ public class RideResponse {
 
     private int rideId;
 
-    private int pickupNode;
-
-    private int dropNode;
+    private Double pickupLat;
+    private Double pickupLng;
+    private Double dropLat;
+    private Double dropLng;
 
     private double fare;
 
@@ -20,20 +21,36 @@ public class RideResponse {
         this.rideId = rideId;
     }
 
-    public int getPickupNode() {
-        return pickupNode;
+    public Double getPickupLat() {
+        return pickupLat;
     }
 
-    public void setPickupNode(int pickupNode) {
-        this.pickupNode = pickupNode;
+    public void setPickupLat(Double pickupLat) {
+        this.pickupLat = pickupLat;
     }
 
-    public int getDropNode() {
-        return dropNode;
+    public Double getPickupLng() {
+        return pickupLng;
     }
 
-    public void setDropNode(int dropNode) {
-        this.dropNode = dropNode;
+    public void setPickupLng(Double pickupLng) {
+        this.pickupLng = pickupLng;
+    }
+
+    public Double getDropLat() {
+        return dropLat;
+    }
+
+    public void setDropLat(Double dropLat) {
+        this.dropLat = dropLat;
+    }
+
+    public Double getDropLng() {
+        return dropLng;
+    }
+
+    public void setDropLng(Double dropLng) {
+        this.dropLng = dropLng;
     }
 
     public double getFare() {
