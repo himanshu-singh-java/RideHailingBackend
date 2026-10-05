@@ -3,9 +3,11 @@ package repository;
 import model.RideStatus;
 import model.Rides;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -16,4 +18,7 @@ public interface RideRepository extends JpaRepository<Rides, Integer> {
     List<Rides> findAllByOrderByRideIdDesc();
 
     boolean existsByRider_RiderIDAndRideStatus(int riderID, RideStatus rideStatus);
+
+    @Query("SELECT r FROM Rides r WHERE r.vehicle.vehicleId = :vehicleId AND r.rideStatus IN('ON_RIDE', 'ACCEPTED')")
+    Optional<Rides> findActiveRideByVehicleId(@Param("vehicleId") int vehicleId);
 }

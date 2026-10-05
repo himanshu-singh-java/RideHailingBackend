@@ -1,10 +1,12 @@
 package controller;
 
+import model.Rides;
 import model.Vehicles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import repository.VehicleRepository;
+import service.RideEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,9 @@ public class VehicleRestController {
 
     @Autowired
     private VehicleRepository vehicleRepository;
+
+    @Autowired
+    private RideEngine rideEngine;
 
     @GetMapping("/status/{type}")
     public ResponseEntity<?> getVehicleByType(@PathVariable String type){
@@ -37,5 +42,12 @@ public class VehicleRestController {
             return ResponseEntity.ok(new ArrayList<>());
         }
         return ResponseEntity.ok(vehicles);
+    }
+
+    @PutMapping("/complete-ride/{vehicleId}")
+    public ResponseEntity<?> completeRideByVehicle(@PathVariable int vehicleId){
+
+        Rides completeRide = rideEngine.completeRideByVehicleId(vehicleId);
+        return ResponseEntity.ok("Ride Completed");
     }
 }

@@ -4,6 +4,7 @@ import mapper.RideMapper;
 import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import repository.RideRepository;
 import repository.RiderRepository;
 import repository.VehicleRepository;
@@ -13,6 +14,7 @@ import util.LocationUtils;
 import java.util.List;
 
 @Service
+@Transactional
 public class RideEngine {
 
     private VehicleRepository vehicleRepository;
@@ -86,7 +88,7 @@ public class RideEngine {
                 .orElseThrow(() -> new RuntimeException("Error: Ride with ID " + rideId + " not found!"));
 
         if(ride.getRideStatus() == RideStatus.COMPLETED){
-            return ride;
+            throw new RuntimeException("This ride is already marked as COMPLETED.");
         }
 
         ride.setRideStatus(RideStatus.COMPLETED);
@@ -126,5 +128,20 @@ public class RideEngine {
 
     public List<Rides> getAllGlobalRides() {
         return rideRepository.findAllByOrderByRideIdDesc();
+    }
+
+    public Rides completeRideByVehicleId(int vehicleId){
+
+        Rides activeRide = rideRepository.findActiveRideByVehicleId(vehicleId)
+                .orElseThrow(() -> new RuntimeException("No Active Ride found for Vehicle Id :" + vehicleId));
+
+        activeRide.setRideStatus(RideStatus.COMPLETED);
+        Vehicles vehicles = activeRide.getVehicle();
+
+        if(vehicles != null){
+            vehicles.setVehicleStatus(VehicleStatus.AVAILABLE);
+            vehicleRepository.save(vehicles);
+        }
+        return rideRepository.save(activeRide);
     }
 }
