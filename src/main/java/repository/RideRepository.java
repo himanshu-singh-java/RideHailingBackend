@@ -13,5 +13,7 @@ public interface RideRepository extends JpaRepository<Rides, Integer> {
 
     List<Rides> findByRider_RiderIDOrderByRideIdDesc(int riderId);
 
+    List<Rides> findAllByOrderByRideIdDesc();
+
     boolean existsByRider_RiderIDAndRideStatus(int riderID, RideStatus rideStatus);
 }

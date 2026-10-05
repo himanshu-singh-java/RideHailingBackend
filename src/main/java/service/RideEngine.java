@@ -123,4 +123,8 @@ public class RideEngine {
 
         rideRepository.deleteById(rideId);
     }
+
+    public List<Rides> getAllGlobalRides() {
+        return rideRepository.findAllByOrderByRideIdDesc();
+    }
 }

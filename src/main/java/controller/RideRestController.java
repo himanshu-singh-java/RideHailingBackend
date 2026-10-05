@@ -61,4 +61,10 @@ public class RideRestController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllRidesGlobal(){
+        List<Rides> allRides = rideEngine.getAllGlobalRides();
+        return ResponseEntity.ok(allRides);
+    }
+
 }
