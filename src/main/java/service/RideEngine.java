@@ -86,13 +86,17 @@ public class RideEngine {
                 .orElseThrow(() -> new RuntimeException("Error: Ride with ID " + rideId + " not found!"));
 
         if(ride.getRideStatus() == RideStatus.COMPLETED){
-            throw new RuntimeException("This ride is already marked as COMPLETED.");
+            return ride;
         }
 
         ride.setRideStatus(RideStatus.COMPLETED);
+
         Vehicles vehicles = ride.getVehicle();
-        vehicles.setVehicleStatus(VehicleStatus.AVAILABLE);
-        vehicleRepository.save(vehicles);
+        if (vehicles != null) {
+            vehicles.setVehicleStatus(VehicleStatus.AVAILABLE);
+            vehicleRepository.save(vehicles);
+        }
+
         rideRepository.save(ride);
 
         return ride;

@@ -6,8 +6,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicles, Integer> {
+
+    @Query("SELECT b FROM Bike b")
+    List<Vehicles> findAllBikes();
+
+    @Query("SELECT c FROM Car c")
+    List<Vehicles> findAllCars();
+
+    @Query("SELECT a FROM Auto a")
+    List<Vehicles> findAllAutos();
 
     @Query(
             value = "SELECT * FROM vehicles v " +
