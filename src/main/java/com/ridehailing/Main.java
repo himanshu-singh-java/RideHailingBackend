@@ -9,9 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableAspectJAutoProxy
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.ridehailing", "controller", "exception", "mapper" ,"repository", "aspect", "service", "util"})
-@EnableJpaRepositories(basePackages = "repository")
-@EntityScan(basePackages = "model")
 public class Main {
     public static void main(String[] args) {
 
